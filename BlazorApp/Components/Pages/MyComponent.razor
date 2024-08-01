@@ -2,40 +2,44 @@
 
 <h3>MyComponent</h3>
 
-@if(P1 != null && P1.Any())
+@if(P1 != null)
 {
-    <table>
-    @foreach(var item in P1)
+  <table>
+  @foreach(var persona in P1)
     {
-        <tr>
-            <td>@item.FirstName</td>
-            <td>@item.LastName</td>
-        </tr>
+      <tr> 
+          <td>@persona.FirstName </td>
+          <td>@persona.LastName </td>
+      </tr>
     }
-    </table>
+  </table>
 }
 
+
+
 @code {
+
+
     private string Name = "Alejandro";
     private string Message = "Este es un componente creado por mi....";
 
-    private List<Models.Persona> P1 = new List<Models.Persona>();
+    private List<Models.Persona> P1 = new ();
 
     protected override async Task OnInitializedAsync()
     {
-        await getPersonaData();
+      getPersonaData();
     }
 
-    private Task getPersonaData()
+
+    private void getPersonaData()
     {
-        P1.AddRange(new List<Models.Persona>{
+        P1.AddRange( new List<Models.Persona>{
             new Models.Persona{FirstName="Sergio", LastName="Sopelana"},
             new Models.Persona{FirstName="Alejandro ", LastName="Paso"},
             new Models.Persona{FirstName="Jon", LastName="Cruz"},
             new Models.Persona{FirstName="Juan", LastName="De Tal"}
         });
-
-        return Task.CompletedTask;
+        
     }
-}
 
+}
