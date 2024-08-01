@@ -3,62 +3,61 @@
 <h3>MyComponent</h3>
 
 <div>
-    <input placeholder="Name" @bind=@Name />
-    <input placeholder="LastName" @bind=@LastName />
-    <button @onclick=@AddPersona> Add Person</button> 
+    <input placeholder="Name" @bind="Name" />
+    <input placeholder="LastName" @bind="LastName" />
+    <button @onclick="AddPersona">Add Person</button> 
 </div>
 
-
-
-@if(P1 != null)
+@if (P1 != null && P1.Any())
 {
-  <table>
-  @foreach(var persona in P1)
-    {
-      <tr> 
-          <td>@persona.FirstName </td>
-          <td>@persona.LastName </td>
-      </tr>
-    }
-  </table>
+    <table>
+        @foreach (var persona in P1)
+        {
+            <tr>
+                <td>@persona.FirstName</td>
+                <td>@persona.LastName</td>
+            </tr>
+        }
+    </table>
 }
 
-
-
 @code {
+    private string Name { get; set; } = "Alejandro";
+    private string LastName { get; set; } = "";
 
-
-    private string Name = "Alejandro";
-    private string Message = "Este es un componente creado por mi....";
-    private string LastName = "";
-    
-
-    private List<Models.Persona> P1 = new ();
+    private List<BlazorApp.Models.Persona> P1 { get; set; } = new List<BlazorApp.Models.Persona>();
 
     protected override async Task OnInitializedAsync()
     {
-      getPersonaData();
+        await Task.Run(() => getPersonaData());
     }
-
 
     private void getPersonaData()
     {
-        P1.AddRange( new List<Models.Persona>{
-            new Models.Persona{FirstName="Sergio", LastName="Sopelana"},
-            new Models.Persona{FirstName="Alejandro ", LastName="Paso"},
-            new Models.Persona{FirstName="Jon", LastName="Cruz"},
-            new Models.Persona{FirstName="Juan", LastName="De Tal"}
+        P1.AddRange(new List<BlazorApp.Models.Persona>
+        {
+            new BlazorApp.Models.Persona { FirstName = "Sergio", LastName = "Sopelana" },
+            new BlazorApp.Models.Persona { FirstName = "Alejandro", LastName = "Paso" },
+            new BlazorApp.Models.Persona { FirstName = "Jon", LastName = "Cruz" },
+            new BlazorApp.Models.Persona { FirstName = "Juan", LastName = "De Tal" }
         });
-        
     }
 
     private void AddPersona()
     {
-        P1.Add(new Models.Persona
+        if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(LastName))
         {
-            FirstName = Name,
-            LastName = LastName
-        });
-    }
+            P1.Add(new BlazorApp.Models.Persona
+            {
+                FirstName = Name,
+                LastName = LastName
+            });
 
+            Name = "";
+            LastName = "";
+
+            StateHasChanged(); // Forzar actualización de la UI
+        }
+    }
 }
+
