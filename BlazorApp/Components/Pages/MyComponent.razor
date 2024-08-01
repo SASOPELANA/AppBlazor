@@ -2,6 +2,14 @@
 
 <h3>MyComponent</h3>
 
+<div>
+    <input placeholder="Name" @bind=@Name />
+    <input placeholder="LastName" @bind=@LastName />
+    <button @onclick=@AddPersona> Add Person</button> 
+</div>
+
+
+
 @if(P1 != null)
 {
   <table>
@@ -22,6 +30,8 @@
 
     private string Name = "Alejandro";
     private string Message = "Este es un componente creado por mi....";
+    private string LastName = "";
+    
 
     private List<Models.Persona> P1 = new ();
 
@@ -40,6 +50,15 @@
             new Models.Persona{FirstName="Juan", LastName="De Tal"}
         });
         
+    }
+
+    private void AddPersona()
+    {
+        P1.Add(new Models.Persona
+        {
+            FirstName = Name,
+            LastName = LastName
+        });
     }
 
 }
